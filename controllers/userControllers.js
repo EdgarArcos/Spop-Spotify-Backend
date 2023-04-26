@@ -81,38 +81,53 @@ const loginUser = async (req, res) => {
 
 
 const editImage = async (req, res) => {
-    const { userId } = req.body;
-    try {
-        const user = await User.findOne({ _id: userId });
-        const resultToUpload = await uploadImg(req.files.file.tempFilePath);
-        const { public_id, secure_url } = resultToUpload;
-        const imgToDelete = user.img.public_id;
+  const { userId } = req.body;
+  try {
+      const user = await User.findOne({ _id: userId });
 
-        user.img.public_id = public_id;
-        user.img.secure_url = secure_url;
+      let public_id, secure_url;
+      try {
+          const resultToUpload = await uploadImg(req.files.file.tempFilePath);
+          public_id = resultToUpload.public_id;
+          secure_url = resultToUpload.secure_url;
+      } catch (error) {
+          return res.status(500).json({
+              ok: false,
+              msg: "Error uploading image",
+              error: error.message,
+          });
+      }
 
-        if (imgToDelete) {
-            await deleteImg(imgToDelete);
-        }
-
-        await user.save();
+      const imgToDelete = user.img.public_id;
+      user.img.public_id = public_id;
+      user.img.secure_url = secure_url;
 
 
-        await fs.unlink(req.files.file.tempFilePath);
+      if (imgToDelete) {
+          try {
+              await deleteImg(imgToDelete);
+          } catch (error) {
+              console.error(`Error deleting image with public_id ${imgToDelete}:`, error);
+          }
+      }
 
-        return res.status(200).json({
-        ok: true,
-        img: user.img.secure_url,
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(503).json({
-        ok: false,
-        msg: "Something happened",
-        });
-    }
+      await user.save();
+
+      await fs.unlink(req.files.file.tempFilePath);
+
+      return res.status(200).json({
+          ok: true,
+          img: user.img.secure_url,
+      });
+  } catch (error) {
+      console.error("Error updating image", error);
+      return res.status(500).json({
+          ok: false,
+          msg: "Error updating image",
+          error: error.message,
+      });
+  }
 };
-
 
 module.exports = {
   addNewUser,
