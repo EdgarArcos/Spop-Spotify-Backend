@@ -1,5 +1,6 @@
 require("dotenv").config();
-const { dbConnection } = require("./database/config");const  fileUpload = require("express-fileupload");
+const { dbConnection } = require("./database/config");
+const  fileUpload = require("express-fileupload");
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");

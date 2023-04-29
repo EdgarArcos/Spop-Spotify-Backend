@@ -13,8 +13,8 @@ const uploadImg = async (filePath) => {
     });
 };
 
-const deleteImg = async (public_id) => {
-    return await cloudinary.uploader.destroy(public_id);
-};
+// const deleteImg = async (public_id) => {
+//     return await cloudinary.uploader.destroy(public_id);
+// };
 
-module.exports = { uploadImg, deleteImg };
+module.exports = { uploadImg };
