@@ -48,7 +48,7 @@ const addNewUser = async (req, res) => {
 
 const aut0Login = async (req, res) => {
 
-  console.log(req.body.email)
+  console.log(req.body)
   
   try {
 
