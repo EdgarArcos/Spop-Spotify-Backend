@@ -46,6 +46,46 @@ const addNewUser = async (req, res) => {
   }
 };
 
+const aut0Login = async (req, res) => {
+
+  console.log(req.body.email)
+  
+  try {
+
+    const user = await User.findOne({email : req.body.email});
+    
+    
+    if(!user){
+      
+        const newUser = new User({
+        name: req.body.name,
+        email: req.body.email,       
+      });
+      await newUser.save();
+      return res.status(201).json({
+        ok: true,
+        user: { id: newUser._id, name: newUser.name, email: newUser.email }
+  
+      });     
+    }
+
+    return res
+    .status(200)
+    .json({
+      ok: true, 
+      user : { id: user._id, name: user.name, email: user.email }});
+
+    
+
+  } catch (err) {
+    return res.status(503).json({
+      ok: false,
+      message: "Something happened"
+    });
+  }
+};
+
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -80,7 +120,12 @@ const loginUser = async (req, res) => {
 };
 
 const editImage = async (req, res) => {
+  console.log(req.body)
   const { userId } = req.body;
+  if (!req.params.id) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
+  
 
   try {
     const user = await User.findOne({ _id: userId });
@@ -120,5 +165,6 @@ const editImage = async (req, res) => {
 module.exports = {
   addNewUser,
   loginUser,
-  editImage
+  editImage,
+  aut0Login
 };
