@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const { uploadImg } = require ("../utils/cloudinary");
+const { uploadImg } = require("../utils/cloudinary");
 const fs = require("fs-extra");
 
 const addNewUser = async (req, res) => {
@@ -47,44 +47,34 @@ const addNewUser = async (req, res) => {
 };
 
 const aut0Login = async (req, res) => {
+  console.log(req.body.email);
 
-  console.log(req.body.email)
-  
   try {
+    const user = await User.findOne({ email: req.body.email });
 
-    const user = await User.findOne({email : req.body.email});
-    
-    
-    if(!user){
-      
-        const newUser = new User({
+    if (!user) {
+      const newUser = new User({
         name: req.body.name,
-        email: req.body.email,       
+        email: req.body.email,
       });
       await newUser.save();
       return res.status(201).json({
         ok: true,
-        user: { id: newUser._id, name: newUser.name, email: newUser.email }
-  
-      });     
+        user: { id: newUser._id, name: newUser.name, email: newUser.email },
+      });
     }
 
-    return res
-    .status(200)
-    .json({
-      ok: true, 
-      user : { id: user._id, name: user.name, email: user.email }});
-
-    
-
+    return res.status(200).json({
+      ok: true,
+      user: { id: user._id, name: user.name, email: user.email },
+    });
   } catch (err) {
     return res.status(503).json({
       ok: false,
-      message: "Something happened"
+      message: "Something happened",
     });
   }
 };
-
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -120,16 +110,11 @@ const loginUser = async (req, res) => {
 };
 
 const editImage = async (req, res) => {
-  console.log(req.body)
   const { userId } = req.body;
-  if (!req.params.id) {
-    return res.status(400).json({ message: "User ID is required" });
-  }
-  
 
   try {
     const user = await User.findOne({ _id: userId });
-    
+
     if (!user) {
       return res.status(404).json({
         ok: false,
@@ -138,7 +123,6 @@ const editImage = async (req, res) => {
     }
 
     const result = await uploadImg(req.files.file.tempFilePath);
-    console.log(result);
     user.img = {
       public_id: result.public_id,
       secure_url: result.secure_url,
@@ -161,10 +145,9 @@ const editImage = async (req, res) => {
   }
 };
 
-
 module.exports = {
   addNewUser,
   loginUser,
   editImage,
-  aut0Login
+  aut0Login,
 };
