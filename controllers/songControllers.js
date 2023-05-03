@@ -43,8 +43,12 @@ const deleteSongs = async (req, res) => {
 }
 
 const updateSongs = async (req, res) => {
-    await Song.findByIdAndUpdate(req.params._id, req.body, { new: true })
-    console.log(req);
+    try {
+        await Song.findByIdAndUpdate(req.params._id, req.body, { new: true })
+        return res.sendStatus(204)
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
 }
 
 module.exports = {
