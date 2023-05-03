@@ -17,6 +17,11 @@ const userSchema = new Schema({
     required: false,
   },
 
+  role: {
+    type: String,
+    required: false,
+  },
+
   img: {
     secure_url: { type: String, required: false },
     public_id: { type: String, required: false },
