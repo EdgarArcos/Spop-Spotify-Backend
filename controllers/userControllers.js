@@ -72,7 +72,25 @@ const editImage = async (req, res) => {
   }
 };
 
+const editUsername = async (req, res) => {
+  const { newName, userId } = req.body;
+
+  try {
+    await User.findByIdAndUpdate(userId, { name: newName });
+    return res.status(200).json({
+      ok: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(503).json({
+      ok: false,
+      msg: "Something happened",
+    });
+  }
+};
+
 module.exports = {
   editImage,
   aut0Login,
+  editUsername,
 };
