@@ -5,7 +5,7 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
-const listRoutes = require("./routes/listRoutes");
+const playlistRoutes = require("./routes/playlistRoutes");
 
 const app = express();
 
@@ -22,7 +22,7 @@ dbConnection();
 // routes
 
 app.use("/users", userRoutes);
-app.use("/list", listRoutes);
+app.use("/playlist", playlistRoutes);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server is running on PORT... ${process.env.PORT || 5000}`);
