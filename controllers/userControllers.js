@@ -21,16 +21,18 @@ const aut0Login = async (req, res) => {
       return res.status(201).json({
         ok: true,
         user: { id: newUser._id, name: newUser.name, email: newUser.email }
-
       });
     }
 
-    return res
-      .status(200)
-      .json({
-        ok: true,
-        user: { id: user._id, name: user.name, email: user.email }
-      });
+    return res.status(200).json({
+      ok: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        img: user.img.secure_url,
+      },
+    });
 
 
 
