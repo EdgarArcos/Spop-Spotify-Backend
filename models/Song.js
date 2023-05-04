@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const listSchema = new Schema({
+const songSchema = new Schema({
     title: {
         type: String,
         required: true,
@@ -10,24 +10,25 @@ const listSchema = new Schema({
         ref: 'artist',
         required: true,
     },
-    url: {
-        type: String,
-        ref: 'url',
-        required: true,
+    song: {
+        url: { type: String, required: true },
+        public_id: { type: String, required: true },
     },
     img: {
         type: String,
         ref: 'image',
-        required: true,
+        required: false,
     },
     genre: {
         type: String,
         ref: 'genre',
-        required: true,
+        required: false,
     },
     like: {
         type: Boolean,
         ref: 'like',
-        required: true,
+        required: false,
     },
 });
+
+module.exports = model('Song', songSchema);

@@ -4,10 +4,15 @@ const { uploadImg } = require("../utils/cloudinary");
 const fs = require("fs-extra");
 
 const aut0Login = async (req, res) => {
+
+  console.log(req.body.email)
+
   try {
     const user = await User.findOne({ email: req.body.email });
 
+
     if (!user) {
+
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -15,19 +20,20 @@ const aut0Login = async (req, res) => {
       await newUser.save();
       return res.status(201).json({
         ok: true,
-        user: { id: newUser._id, name: newUser.name, email: newUser.email },
+        user: { id: newUser._id, name: newUser.name, email: newUser.email }
+
       });
     }
 
-    return res.status(200).json({
-      ok: true,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        img: user.img.secure_url,
-      },
-    });
+    return res
+      .status(200)
+      .json({
+        ok: true,
+        user: { id: user._id, name: user.name, email: user.email }
+      });
+
+
+
   } catch (err) {
     return res.status(503).json({
       ok: false,
@@ -38,6 +44,8 @@ const aut0Login = async (req, res) => {
 
 const editImage = async (req, res) => {
   const { userId } = req.body;
+
+
 
   try {
     const user = await User.findOne({ _id: userId });
@@ -56,9 +64,8 @@ const editImage = async (req, res) => {
     };
 
     await fs.unlink(req.files.file.tempFilePath);
-
     await user.save();
-
+    await fs.remove(req.files.file.tempFilePath)
     return res.status(200).json({
       ok: true,
       img: user.img.secure_url,
