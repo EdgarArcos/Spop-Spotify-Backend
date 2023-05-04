@@ -1,16 +1,16 @@
-const List = require("../models/List");
+const Playlist = require("../models/Playlist");
 
 
-const createList = async (req, res) => {
-    const newList = new List({
+const createPlaylist = async (req, res) => {
+    const newPlaylist = new Playlist({
         title: req.body.title,
         user: req.body.user,
     });
     try {
-        const savedList = await newList.save();
+        const savedPlaylist = await newPlaylist.save();
         return res.status(200).json({
             ok: true,
-            todo: savedList
+            playlist: savedPlaylist
         });
     } catch (err) {
         return res.status(503).json({
@@ -21,4 +21,4 @@ const createList = async (req, res) => {
 };
 
 
-module.exports = {createList};
+module.exports = {createPlaylist};
