@@ -30,6 +30,8 @@ const songSchema = new Schema({
     ref: "like",
     required: true,
   },
+  playlist: { type: Schema.Types.ObjectId, ref: 'Playlist' }
+
 });
 
 module.exports = model("Song", songSchema);
