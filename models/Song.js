@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const songSchema = new Schema({
-  title: {
+  name: {
     type: String,
     required: true,
   },
@@ -10,28 +10,25 @@ const songSchema = new Schema({
     ref: "artist",
     required: true,
   },
-  url: {
-    type: String,
-    ref: "url",
-    required: true,
+  song: {
+    url: { type: String, required: true },
+    public_id: { type: String, required: true },
   },
   img: {
     type: String,
     ref: "image",
-    required: true,
+    required: false,
   },
   genre: {
     type: String,
     ref: "genre",
-    required: true,
+    required: false,
   },
   like: {
     type: Boolean,
     ref: "like",
-    required: true,
+    required: false,
   },
-  playlist: { type: Schema.Types.ObjectId, ref: 'Playlist' }
-
 });
 
 module.exports = model("Song", songSchema);

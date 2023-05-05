@@ -15,14 +15,14 @@ const getSongs = async (req, res) => {
 
 const createSong = async (req, res) => {
     try {
-        const { title, artist } = req.body
+        const { name, artist } = req.body
         const resultSong = await uploadSong(req.files.song.tempFilePath)
         let song;
         song = {
             url: resultSong.secure_url,
             public_id: resultSong.public_id
         }
-        const newSong = new Song({ title, artist, song })
+        const newSong = new Song({ name, artist, song })
         await newSong.save()
         await fs.remove(req.files.song.tempFilePath)
         return res.json(newSong)
