@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Playlist = require("../models/Playlist");
 const bcrypt = require("bcrypt");
 const { uploadImg } = require("../utils/cloudinary");
 const fs = require("fs-extra");
@@ -15,6 +16,13 @@ const aut0Login = async (req, res) => {
         email: req.body.email,
       });
       await newUser.save();
+      const likedSongs = await new Playlist({
+        title: "Liked Songs",
+        img: "https://res.cloudinary.com/dycz1nib9/image/upload/v1683276186/Artist_Songs/likedsongsbig_edgts4.png",
+        songs: [],
+        user: newUser._id,
+      });
+      await likedSongs.save();
       return res.status(201).json({
         ok: true,
         user: { id: newUser._id, name: newUser.name, email: newUser.email },
