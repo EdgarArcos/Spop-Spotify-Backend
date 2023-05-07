@@ -1,6 +1,5 @@
 const User = require("../models/User");
 const Playlist = require("../models/Playlist");
-const bcrypt = require("bcrypt");
 const { uploadImg } = require("../utils/cloudinary");
 const fs = require("fs-extra");
 
