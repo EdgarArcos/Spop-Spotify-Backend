@@ -14,21 +14,22 @@ const getSongs = async (req, res) => {
 
 
 const createSong = async (req, res) => {
-    try {
-        const { name, artist } = req.body
-        const resultSong = await uploadSong(req.files.song.tempFilePath)
-        let song;
-        song = {
-            url: resultSong.secure_url,
-            public_id: resultSong.public_id
-        }
-        const newSong = new Song({ name, artist, song })
-        await newSong.save()
-        await fs.remove(req.files.song.tempFilePath)
-        return res.json(newSong)
-    } catch (error) {
-        return res.status(500).json({ message: error.message })
-    }
+    console.log(req.body);
+    // try {
+    //     const { name, artist } = req.body
+    //     const resultSong = await uploadSong(req.files.song.tempFilePath)
+    //     let song;
+    //     song = {
+    //         url: resultSong.secure_url,
+    //         public_id: resultSong.public_id
+    //     }
+    //     const newSong = new Song({ name, artist, song })
+    //     await newSong.save()
+    //     await fs.remove(req.files.song.tempFilePath)
+    //     return res.json(newSong)
+    // } catch (error) {
+    //     return res.status(500).json({ message: error.message })
+    // }
 }
 
 const deleteSongs = async (req, res) => {

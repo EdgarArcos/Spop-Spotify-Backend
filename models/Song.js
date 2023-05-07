@@ -11,8 +11,8 @@ const songSchema = new Schema({
         required: true,
     },
     song: {
-        url: { type: String, required: true },
-        public_id: { type: String, required: true },
+        url: { type: String, required: false },
+        public_id: { type: String, required: false },
     },
     img: {
         type: String,
