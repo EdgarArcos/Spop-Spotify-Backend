@@ -8,6 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const playlistRoutes = require("./routes/playlistRoutes");
 const songRoutes = require("./routes/songRoutes");
 const musicRoutes = require("./routes/musicRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/users", userRoutes);
 app.use("/playlist", playlistRoutes);
 app.use("/artist", songRoutes);
 app.use("/music", musicRoutes);
+app.use("/admin", adminRoutes);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server is running on PORT... ${process.env.PORT || 5000}`);
