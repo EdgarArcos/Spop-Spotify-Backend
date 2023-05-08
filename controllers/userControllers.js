@@ -4,7 +4,6 @@ const { uploadImg } = require("../utils/cloudinary");
 const fs = require("fs-extra");
 
 const aut0Login = async (req, res) => {
-  console.log(req.body.email);
 
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -25,9 +24,10 @@ const aut0Login = async (req, res) => {
       return res.status(201).json({
         ok: true,
         user: { id: newUser._id, name: newUser.name, email: newUser.email },
+        playlist: [likedSongs]
       });
     }
-
+    const playlist = await Playlist.find({user:user._id})
     return res.status(200).json({
       ok: true,
       user: {
@@ -36,6 +36,7 @@ const aut0Login = async (req, res) => {
         email: user.email,
         img: user.img.secure_url,
       },
+      playlist: playlist
     });
   } catch (err) {
     return res.status(503).json({
