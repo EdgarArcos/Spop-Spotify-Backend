@@ -1,26 +1,31 @@
 const Playlist = require("../models/Playlist");
+const User = require("../models/User")
 
 
 const createPlaylist = async (req, res) => {
-    const newPlaylist = new Playlist({
-        title: req.body.title,
-        user: req.body.user,
-        songs: req.body.songs
-    });
+    console.log(req.body)
+    const { title, img, songs, userId } = req.body;
+    const newPlaylist = new Playlist({ title, img, songs, user: userId });
+
     try {
         const savedPlaylist = await newPlaylist.save();
-        const populatedPlaylist = await Playlist.findById(savedPlaylist._id).populate('songs');
         return res.status(200).json({
             ok: true,
-            playlist: populatedPlaylist
+            playlist: savedPlaylist
         });
+
     } catch (err) {
         return res.status(503).json({
-            ok: false,
-            message: "Something happened"
-        })
-    }
+        ok: false,
+        message: "Something happened"
+    })
+}
 };
+
+
+
+
+
 
 const addToPlaylist = async (req, res) => {
     console.log(req.body)
