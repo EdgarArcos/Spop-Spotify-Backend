@@ -5,8 +5,6 @@ const { uploadImg } = require("../utils/cloudinary");
 const fs = require("fs-extra");
 
 const aut0Login = async (req, res) => {
-  console.log(req.body.email);
-
   try {
     const user = await User.findOne({ email: req.body.email });
 
