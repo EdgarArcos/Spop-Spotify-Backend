@@ -11,8 +11,8 @@ const songSchema = new Schema({
         required: true,
     },
     song: {
-        url: { type: String, required: false },
-        public_id: { type: String, required: false },
+        url: { type: String, required: true },
+        public_id: { type: String, required: true },
     },
     img: {
         type: String,
@@ -22,13 +22,8 @@ const songSchema = new Schema({
     genre: {
         type: String,
         ref: 'genre',
-        required: false,
-    },
-    like: {
-        type: Boolean,
-        ref: 'like',
-        required: false,
-    },
+        required: true,
+    }
 });
 
 module.exports = model('Song', songSchema);
