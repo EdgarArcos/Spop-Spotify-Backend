@@ -87,6 +87,15 @@ const addToPlaylist = async (req, res) => {
   try {
     const playlist = await Playlist.findById(playlistId).populate('songs');
 
+    const existingSong = playlist.songs.find(song => song._id.toString() === songId);
+    if (existingSong) {
+      return res.status(200).json({
+        ok: true,
+        playlist: playlist,
+      });
+    }
+
+
     playlist.songs.push(songId);
     await playlist.save();
 
