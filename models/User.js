@@ -23,8 +23,14 @@ const userSchema = new Schema({
   },
 
   img: {
-    secure_url: { type: String, required: false },
-    public_id: { type: String, required: false },
+    secure_url: { type: String, required: false, default: '' },
+    public_id: { type: String, required: false, default: '' },
+  },
+  
+  role: {
+    type: String,
+    required: true,
+    default: 'User',
   },
 });
 
