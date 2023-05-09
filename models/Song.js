@@ -14,10 +14,9 @@ const songSchema = new Schema({
         url: { type: String, required: true },
         public_id: { type: String, required: true },
     },
-    img: {
-        type: String,
-        ref: 'image',
-        required: false,
+    image: {
+        url: { type: String, required: true },
+        public_id: { type: String, required: true },
     },
     genre: {
         type: String,
