@@ -1,4 +1,6 @@
 const Playlist = require("../models/Playlist");
+const { uploadImg, deleteImg  } = require("../utils/cloudinary");
+const fs = require("fs-extra");
 
 
 const createPlaylist = async (req, res) => {
@@ -20,36 +22,57 @@ const createPlaylist = async (req, res) => {
 }
 };
 
-const updatePlaylist = async (req, res) => {
-    try {   
-        const updatedTodo = await Todo.findByIdAndUpdate(req.body._id, {
-        title: req.body.title,
-        img: req.body.img,
-    }, { new: true });
-        return res.status(200).json(updatedPlaylist);
-    } catch (err) {
-        return res.status(503).json({
-            ok: false,
-            message: "Something happened"
-        })
-    }
-};
-
-const getPlaylist = async (req, res) => {
-
-    const { userId } = req.body;
-
-
+const editPlaylistTitle = async (req, res) => {
+    console.log(req.body)
+    const { newTitle, playlistId } = req.body;
+  
     try {
-        const playlists = await Playlist.find({ user: userId })    
-        return res.status(200).json(playlists);
-    } catch (err) {
-        return res.status(503).json({
-            ok: false,
-            message: "Something happened"
-        });
+      await Playlist.findByIdAndUpdate(playlistId, { title: newTitle });
+      return res.status(200).json({
+        ok: true,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(503).json({
+        ok: false,
+        msg: "Something happened",
+      });
     }
+  };
+
+  const editPlaylistImage = async (req, res) => {
+    console.log(req.body)
+    const { playlistId } = req.body;
+  try {
+    const playlist = await Playlist.findOne({ _id: playlistId });
+    const resultToUpload = await uploadImg(req.files.file.tempFilePath);
+    const { public_id, secure_url } = resultToUpload;
+    const imgToDelete = playlist.img.public_id;
+
+    playlist.img.public_id = public_id;
+    playlist.img.secure_url = secure_url;
+
+    if (imgToDelete) {
+      await deleteImg(imgToDelete);
+    }
+
+    await playlist.save();
+
+    await fs.unlink(req.files.file.tempFilePath);
+
+    return res.status(200).json({
+      ok: true,
+      img: playlist.img.secure_url,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(503).json({
+      ok: false,
+      msg: "Something happened",
+    });
+  }
 };
+
 
 
 
@@ -103,4 +126,4 @@ const addToPlaylist = async (req, res) => {
 
 
 
-module.exports = {createPlaylist, addToPlaylist, updatePlaylist, getPlaylist, deletePlaylist  };
+module.exports = {createPlaylist, addToPlaylist, editPlaylistTitle, deletePlaylist, editPlaylistImage  };
