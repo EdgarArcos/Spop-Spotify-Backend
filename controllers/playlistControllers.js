@@ -1,13 +1,11 @@
 const Playlist = require("../models/Playlist");
-const User = require("../models/User")
 
 
 const createPlaylist = async (req, res) => {
-    console.log(req.body)
-    const { title, img, songs, userId } = req.body;
-    const newPlaylist = new Playlist({ title, img, songs, user: userId });
-
+    const { userId } = req.body;
+    
     try {
+        const newPlaylist = new Playlist({ user: userId });
         const savedPlaylist = await newPlaylist.save();
         return res.status(200).json({
             ok: true,
@@ -20,6 +18,54 @@ const createPlaylist = async (req, res) => {
         message: "Something happened"
     })
 }
+};
+
+const updatePlaylist = async (req, res) => {
+    try {   
+        const updatedTodo = await Todo.findByIdAndUpdate(req.body._id, {
+        title: req.body.title,
+        img: req.body.img,
+    }, { new: true });
+        return res.status(200).json(updatedPlaylist);
+    } catch (err) {
+        return res.status(503).json({
+            ok: false,
+            message: "Something happened"
+        })
+    }
+};
+
+const getPlaylist = async (req, res) => {
+
+    const { userId } = req.body;
+
+
+    try {
+        const playlists = await Playlist.find({ user: userId })    
+        return res.status(200).json(playlists);
+    } catch (err) {
+        return res.status(503).json({
+            ok: false,
+            message: "Something happened"
+        });
+    }
+};
+
+
+
+const deletePlaylist = async (req, res) => {
+    try {
+        await Todo.findByIdAndDelete(req.params.playlistId);
+        return res.json({
+            ok: true,
+            message: "Playlist Deleted Successfully"
+        });
+    } catch (err) {
+        return res.status(503).json({
+            ok: false,
+            message: "Something happened"
+        })
+    }
 };
 
 
@@ -57,4 +103,4 @@ const addToPlaylist = async (req, res) => {
 
 
 
-module.exports = {createPlaylist, addToPlaylist };
+module.exports = {createPlaylist, addToPlaylist, updatePlaylist, getPlaylist, deletePlaylist  };
