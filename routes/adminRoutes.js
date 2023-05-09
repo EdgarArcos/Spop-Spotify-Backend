@@ -1,11 +1,13 @@
 const express = require('express');
-const { searchUser, deleteUser } = require ("../controllers/adminControllers");
-
+const {
+  searchUser,
+  deleteUser,
+  updateUserRole,
+} = require('../controllers/adminControllers');
 
 const router = express.Router();
-router.post('/searchUser', searchUser)
-router.delete('/:userId', deleteUser)
-
-
+router.post('/searchUser', searchUser);
+router.delete('/:userId', deleteUser);
+router.put('/:userId', updateUserRole);
 
 module.exports = router;
