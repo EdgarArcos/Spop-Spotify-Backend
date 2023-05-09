@@ -81,11 +81,8 @@ const deletePlaylist = async (req, res) => {
 
 const addToPlaylist = async (req, res) => {
   console.log(req.body);
-  const playlistId = req.body._id;
-  const song = {
-    title: req.body.title,
-    artist: req.body.artist,
-  };
+  const { songId , playlistId } = req.body;
+  
   try {
     const playlist = await Playlist.findByIdAndUpdate(
       playlistId,
