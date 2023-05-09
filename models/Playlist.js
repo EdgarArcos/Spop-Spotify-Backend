@@ -10,7 +10,6 @@ const playlistSchema = new Schema({
   img: {
     type: String,
     required: false,
-    secure_url: { type: String, required: false, default: "" },
     public_id: { type: String, required: false, default: "" },
     default: "https://res.cloudinary.com/dycz1nib9/image/upload/v1683280442/Artist_Songs/createplaylist_ml9at0.png"
   },
