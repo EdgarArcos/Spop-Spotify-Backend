@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 router.post('/add', createPlaylist);
-router.post("/playlistsongs", addToPlaylist);
+router.post("/addsong", addToPlaylist);
 router.put("/edittitle", editPlaylistTitle);
 router.delete("/deleteplaylist", deletePlaylist);
 router.post("/editimg", editPlaylistImage)

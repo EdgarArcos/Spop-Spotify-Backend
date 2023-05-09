@@ -1,5 +1,6 @@
 const Playlist = require("../models/Playlist");
-const { uploadImg, deleteImg } = require("../utils/cloudinary");
+
+const { uploadImg } = require("../utils/cloudinary");
 const fs = require("fs-extra");
 
 const createPlaylist = async (req, res) => {
@@ -21,7 +22,7 @@ const createPlaylist = async (req, res) => {
 };
 
 const editPlaylistTitle = async (req, res) => {
-  console.log(req.body);
+  
   const { newTitle, playlistId } = req.body;
 
   try {
@@ -80,23 +81,24 @@ const deletePlaylist = async (req, res) => {
 };
 
 const addToPlaylist = async (req, res) => {
-  console.log(req.body);
-  const { songId , playlistId } = req.body;
   
+  const { songId, playlistId } = req.body;
+
   try {
-    const playlist = await Playlist.findByIdAndUpdate(
-      playlistId,
-      { $push: { songs: song } },
-      { new: true }
-    ).populate("songs");
+    const playlist = await Playlist.findById(playlistId).populate('songs');
+
+    playlist.songs.push(songId);
+    await playlist.save();
+
     return res.status(200).json({
       ok: true,
       playlist: playlist,
     });
   } catch (err) {
-    return res.status(503).json({
+    console.log(err);
+    return res.status(500).json({
       ok: false,
-      message: "Something happened",
+      message: 'Something went wrong',
     });
   }
 };
