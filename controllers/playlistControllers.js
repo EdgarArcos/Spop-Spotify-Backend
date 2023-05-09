@@ -46,15 +46,9 @@ const editPlaylistTitle = async (req, res) => {
   try {
     const playlist = await Playlist.findOne({ _id: playlistId });
     const resultToUpload = await uploadImg(req.files.file.tempFilePath);
-    const { public_id, secure_url } = resultToUpload;
-    const imgToDelete = playlist.img.public_id;
+    const { secure_url } = resultToUpload;
 
-    playlist.img.public_id = public_id;
     playlist.img.secure_url = secure_url;
-
-    if (imgToDelete) {
-      await deleteImg(imgToDelete);
-    }
 
     await playlist.save();
 
@@ -62,7 +56,7 @@ const editPlaylistTitle = async (req, res) => {
 
     return res.status(200).json({
       ok: true,
-      img: playlist.img.secure_url,
+      img: playlist.img,
     });
   } catch (error) {
     console.log(error);
