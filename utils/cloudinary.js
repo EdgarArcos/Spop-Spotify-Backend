@@ -13,15 +13,16 @@ const uploadImg = async (filePath) => {
     });
 };
 
+const deleteImg = async (public_id) => {
+    return await cloudinary.uploader.destroy(public_id);
+};
+
 const uploadImgSong = async (filePath) => {
     return await cloudinary.uploader.upload(filePath, {
         folder: "Artist_Songs",
     });
 };
 
-const deleteImage = async id => {
-    return await cloudinary.uploader.destroy(id)
-}
 
 
 
@@ -36,4 +37,4 @@ const deleteSongCloud = async id => {
     return await cloudinary.uploader.destroy(id)
 }
 
-module.exports = { uploadImg, uploadSong, deleteSongCloud, uploadImgSong, deleteImage };
+module.exports = { uploadImg, uploadSong, deleteSongCloud, uploadImgSong, deleteImg  };

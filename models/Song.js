@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const songSchema = new Schema({
     name: {
@@ -14,7 +14,7 @@ const songSchema = new Schema({
         url: { type: String, required: true },
         public_id: { type: String, required: true },
     },
-    image: {
+    img: {
         url: { type: String, required: true },
         public_id: { type: String, required: true },
     },
@@ -25,4 +25,4 @@ const songSchema = new Schema({
     }
 });
 
-module.exports = model('Song', songSchema);
+module.exports = model("Song", songSchema);
