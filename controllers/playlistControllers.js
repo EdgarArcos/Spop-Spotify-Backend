@@ -22,7 +22,6 @@ const createPlaylist = async (req, res) => {
 };
 
 const editPlaylistTitle = async (req, res) => {
-  
   const { newTitle, playlistId } = req.body;
 
   try {
@@ -81,13 +80,14 @@ const deletePlaylist = async (req, res) => {
 };
 
 const addToPlaylist = async (req, res) => {
-  
   const { songId, playlistId } = req.body;
 
   try {
-    const playlist = await Playlist.findById(playlistId).populate('songs');
+    const playlist = await Playlist.findById(playlistId).populate("songs");
 
-    const existingSong = playlist.songs.find(song => song._id.toString() === songId);
+    const existingSong = playlist.songs.find(
+      (song) => song._id.toString() === songId
+    );
     if (existingSong) {
       return res.status(200).json({
         ok: true,
@@ -95,19 +95,21 @@ const addToPlaylist = async (req, res) => {
       });
     }
 
-
     playlist.songs.push(songId);
     await playlist.save();
+    const playlistModified = await Playlist.findById(playlistId).populate(
+      "songs"
+    );
 
     return res.status(200).json({
       ok: true,
-      playlist: playlist,
+      playlist: playlistModified,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       ok: false,
-      message: 'Something went wrong',
+      message: "Something went wrong",
     });
   }
 };
