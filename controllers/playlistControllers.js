@@ -67,10 +67,26 @@ const editPlaylistImage = async (req, res) => {
 
 const deletePlaylist = async (req, res) => {
   try {
-    await Todo.findByIdAndDelete(req.params.playlistId);
+    await Playlist.findByIdAndDelete(req.body.playlistId);
     return res.json({
       ok: true,
       message: "Playlist Deleted Successfully",
+    });
+  } catch (err) {
+    return res.status(503).json({
+      ok: false,
+      message: "Something happened",
+    });
+  }
+};
+
+
+const deleteSong = async (req, res) => {
+  try {
+    await Song.findByIdAndDelete(req.body.songId);
+    return res.json({
+      ok: true,
+      message: "Song Deleted Successfully",
     });
   } catch (err) {
     return res.status(503).json({
@@ -118,4 +134,5 @@ module.exports = {
   editPlaylistTitle,
   deletePlaylist,
   editPlaylistImage,
+  deleteSong
 };
