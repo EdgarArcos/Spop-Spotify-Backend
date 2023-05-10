@@ -41,7 +41,6 @@ const createSong = async (req, res) => {
 const deleteSongs = async (req, res) => {
     try {
         const songRemoved = await Song.findByIdAndDelete(req.params.id)
-        console.log(songRemoved);
         if (!songRemoved) return res.sendStatus(404)
         await deleteSongCloud(songRemoved.song.public_id)
         await deleteImage(songRemoved.image.public_id)
