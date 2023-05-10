@@ -18,17 +18,7 @@ const createSong = async (req, res) => {
         const { name, artist, genre } = req.body
         const resultSong = await uploadSong(req.files.song.tempFilePath)
         const resultImageSong = await uploadImgSong(req.files.image.tempFilePath)
-        let image;
-        image = {
-            url: resultImageSong.secure_url,
-            public_id: resultImageSong.public_id
-        }
-        let song;
-        song = {
-            url: resultSong.secure_url,
-            public_id: resultSong.public_id
-        }
-        const newSong = new Song({ name, artist, genre, song, image })
+        const newSong = new Song({ name, artist, genre, url: resultSong.secure_url, img: resultImageSong.secure_url })
         await newSong.save()
         await fs.remove(req.files.song.tempFilePath)
         await fs.remove(req.files.image.tempFilePath)

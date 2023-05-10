@@ -10,13 +10,11 @@ const songSchema = new Schema({
         ref: 'artist',
         required: true,
     },
-    song: {
-        url: { type: String, required: true },
-        public_id: { type: String, required: true },
+    url: {
+        type: String, required: true
     },
     img: {
-        url: { type: String, required: true },
-        public_id: { type: String, required: true },
+        type: String, required: true
     },
     genre: {
         type: String,
