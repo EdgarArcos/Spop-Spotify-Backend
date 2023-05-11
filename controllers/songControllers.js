@@ -32,8 +32,6 @@ const deleteSongs = async (req, res) => {
     try {
         const songRemoved = await Song.findByIdAndDelete(req.params.id)
         if (!songRemoved) return res.sendStatus(404)
-        await deleteSongCloud(songRemoved.song.public_id)
-        await deleteImage(songRemoved.image.public_id)
         return res.sendStatus(204)
     } catch (error) {
         return res.status(500).json({ message: error.message })
