@@ -1,5 +1,6 @@
 const Playlist = require("../models/Playlist");
 
+
 const { uploadImg } = require("../utils/cloudinary");
 const fs = require("fs-extra");
 
@@ -63,13 +64,14 @@ const editPlaylistImage = async (req, res) => {
     });
   }
 };
-
 const deletePlaylist = async (req, res) => {
+  
+  const { playlistId } = req.body;
   try {
-    await Playlist.findByIdAndDelete(req.body.playlistId);
+    const deletedPlaylist = await Playlist.findByIdAndDelete(playlistId);
     return res.json({
       ok: true,
-      message: "Playlist Deleted Successfully",
+      message: "Playlist Deleted Successfully"
     });
   } catch (err) {
     return res.status(503).json({
@@ -81,19 +83,27 @@ const deletePlaylist = async (req, res) => {
 
 
 const deleteSong = async (req, res) => {
+
+  console.log(req.body)
+  const { songId, playlistId } = req.body;
+
   try {
-    await Song.findByIdAndDelete(req.body.songId);
-    return res.json({
+    const newplaylist = await Playlist.findById(playlistId).populate("songs");
+    newplaylist.songs.pull(songId);
+    await newplaylist.save();
+
+    return res.status(200).json({
       ok: true,
-      message: "Song Deleted Successfully",
+      playlist: newplaylist
     });
-  } catch (err) {
+  } catch (error) {
+    console.log(error);
     return res.status(503).json({
       ok: false,
-      message: "Something happened",
+      msg: "Something happened",
     });
   }
-};
+}
 
 const addToPlaylist = async (req, res) => {
   const { songId, playlistId } = req.body;

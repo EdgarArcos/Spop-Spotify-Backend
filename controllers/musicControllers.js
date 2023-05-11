@@ -36,6 +36,7 @@ const getSongsByGenre = async (req, res) => {
 };
 
 const handleLikeSong = async (req, res) => {
+  console.log()
   const { userId, songId } = req.body;
 
   try {
