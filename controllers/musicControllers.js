@@ -55,31 +55,31 @@ const getSongById = async (req, res) => {
 
 const handleLikeSong = async (req, res) => {
   const { userId, songId } = req.body;
-
   try {
     const likedSongs = await Playlist.findOne({
       user: userId,
       title: "Liked Songs",
-    }).populate("songs");
-
+    });
     if (likedSongs.songs.includes(songId)) {
-      likedSongs.songs.pull(songId);
+      await likedSongs.songs.pull(songId);
       await likedSongs.save();
+      const newLikedSongs = await Playlist.findById(likedSongs._id).populate(
+        "songs"
+      );
       return res.status(200).json({
         ok: true,
-        likedSongs,
+        likedSongs: newLikedSongs,
         msg: "deleted",
       });
     }
     likedSongs.songs.push(songId);
     await likedSongs.save();
-    const newLikedSongs = await Playlist.findOne({
-      user: userId,
-      title: "Liked Songs",
-    }).populate("songs");
+    const newLikedSongs = await Playlist.findById(likedSongs._id).populate(
+      "songs"
+    );
     return res.status(200).json({
       ok: true,
-      newLikedSongs,
+      likedSongs: newLikedSongs,
       msg: "added",
     });
   } catch (error) {
