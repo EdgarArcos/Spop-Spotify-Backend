@@ -22,19 +22,14 @@ const aut0Login = async (req, res) => {
       await likedSongs.save();
       return res.status(201).json({
         ok: true,
-        user: { id: newUser._id, name: newUser.name, email: newUser.email },
+        user,
         playlist: [likedSongs],
       });
     }
     const playlist = await Playlist.find({ user: user._id }).populate("songs");
     return res.status(200).json({
       ok: true,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        img: user.img.secure_url,
-      },
+      user,
       playlist: playlist,
     });
   } catch (err) {
