@@ -35,24 +35,6 @@ const getSongsByGenre = async (req, res) => {
   }
 };
 
-const getSongById = async (req, res) => {
-  const { songId } = req.params;
-
-  try {
-    const song = await Song.findById(songId);
-    return res.status(200).json({
-      ok: true,
-      song,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(503).json({
-      ok: false,
-      msg: "Something happened",
-    });
-  }
-};
-
 const handleLikeSong = async (req, res) => {
   const { userId, songId } = req.body;
   try {
@@ -95,5 +77,4 @@ module.exports = {
   getAllGenres,
   getSongsByGenre,
   handleLikeSong,
-  getSongById,
 };
