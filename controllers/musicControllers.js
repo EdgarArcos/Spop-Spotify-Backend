@@ -1,6 +1,6 @@
-const Song = require("../models/Song");
-const Genre = require("../models/Genre");
-const Playlist = require("../models/Playlist");
+const Song = require('../models/Song');
+const Genre = require('../models/Genre');
+const Playlist = require('../models/Playlist');
 
 const getAllGenres = async (req, res) => {
   try {
@@ -13,7 +13,7 @@ const getAllGenres = async (req, res) => {
     console.log(error);
     return res.status(503).json({
       ok: false,
-      msg: "Something happened",
+      msg: 'Something happened',
     });
   }
 };
@@ -30,7 +30,7 @@ const getSongsByGenre = async (req, res) => {
     console.log(error);
     return res.status(503).json({
       ok: false,
-      msg: "Something happened",
+      msg: 'Something happened',
     });
   }
 };
@@ -40,35 +40,53 @@ const handleLikeSong = async (req, res) => {
   try {
     const likedSongs = await Playlist.findOne({
       user: userId,
-      title: "Liked Songs",
+      title: 'Liked Songs',
     });
     if (likedSongs.songs.includes(songId)) {
       await likedSongs.songs.pull(songId);
       await likedSongs.save();
       const newLikedSongs = await Playlist.findById(likedSongs._id).populate(
-        "songs"
+        'songs'
       );
       return res.status(200).json({
         ok: true,
         likedSongs: newLikedSongs,
-        msg: "deleted",
+        msg: 'deleted',
       });
     }
     likedSongs.songs.push(songId);
     await likedSongs.save();
     const newLikedSongs = await Playlist.findById(likedSongs._id).populate(
-      "songs"
+      'songs'
     );
     return res.status(200).json({
       ok: true,
       likedSongs: newLikedSongs,
-      msg: "added",
+      msg: 'added',
     });
   } catch (error) {
     console.log(error);
     return res.status(503).json({
       ok: false,
-      msg: "Something happened",
+      msg: 'Something happened',
+    });
+  }
+};
+
+const handleDragAndDrop = async (req, res) => {
+  const { playlistId, newOrderList } = req.body;
+  try {
+    const playlist = await Playlist.findById(playlistId);
+    playlist.songs = newOrderList;
+    await playlist.save();
+    return res.status(200).json({
+      ok: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(503).json({
+      ok: false,
+      msg: 'Something happened',
     });
   }
 };
@@ -77,4 +95,5 @@ module.exports = {
   getAllGenres,
   getSongsByGenre,
   handleLikeSong,
+  handleDragAndDrop,
 };
