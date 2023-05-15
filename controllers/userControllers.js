@@ -62,9 +62,10 @@ const editImage = async (req, res) => {
     await fs.unlink(req.files.file.tempFilePath);
     await user.save();
     await fs.remove(req.files.file.tempFilePath);
+
     return res.status(200).json({
       ok: true,
-      img: user.img.secure_url,
+      img: user.img,
     });
   } catch (error) {
     console.log(error);
