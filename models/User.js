@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema({
   name: {
@@ -13,15 +13,17 @@ const userSchema = new Schema({
   },
 
   img: {
-    secure_url: { type: String, required: false, default: "" },
-    public_id: { type: String, required: false, default: "" },
+    secure_url: { type: String, required: false, default: '' },
+    public_id: { type: String, required: false, default: '' },
   },
 
   role: {
     type: String,
     required: true,
-    default: "User",
+    default: 'User',
   },
+
+  followedPlaylists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }],
 });
 
-module.exports = model("User", userSchema);
+module.exports = model('User', userSchema);

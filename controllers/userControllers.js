@@ -1,11 +1,13 @@
-const User = require("../models/User");
-const Playlist = require("../models/Playlist");
-const { uploadImg } = require("../utils/cloudinary");
-const fs = require("fs-extra");
+const User = require('../models/User');
+const Playlist = require('../models/Playlist');
+const { uploadImg } = require('../utils/cloudinary');
+const fs = require('fs-extra');
 
 const aut0Login = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.email }).populate(
+      'followedPlaylists'
+    );
 
     if (!user) {
       const newUser = new User({
@@ -14,8 +16,8 @@ const aut0Login = async (req, res) => {
       });
       await newUser.save();
       const likedSongs = await new Playlist({
-        title: "Liked Songs",
-        img: "https://res.cloudinary.com/dycz1nib9/image/upload/v1683276186/Artist_Songs/likedsongsbig_edgts4.png",
+        title: 'Liked Songs',
+        img: 'https://res.cloudinary.com/dycz1nib9/image/upload/v1683276186/Artist_Songs/likedsongsbig_edgts4.png',
         songs: [],
         user: newUser._id,
       });
@@ -26,7 +28,7 @@ const aut0Login = async (req, res) => {
         playlist: [likedSongs],
       });
     }
-    const playlist = await Playlist.find({ user: user._id }).populate("songs");
+    const playlist = await Playlist.find({ user: user._id }).populate('songs');
     return res.status(200).json({
       ok: true,
       user,
@@ -35,7 +37,7 @@ const aut0Login = async (req, res) => {
   } catch (err) {
     return res.status(503).json({
       ok: false,
-      message: "Something happened",
+      message: 'Something happened',
     });
   }
 };
@@ -49,7 +51,7 @@ const editImage = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         ok: false,
-        msg: "User not found",
+        msg: 'User not found',
       });
     }
 
@@ -71,7 +73,7 @@ const editImage = async (req, res) => {
     console.log(error);
     return res.status(503).json({
       ok: false,
-      msg: "Something happened",
+      msg: 'Something happened',
     });
   }
 };
@@ -88,7 +90,43 @@ const editUsername = async (req, res) => {
     console.log(error);
     return res.status(503).json({
       ok: false,
-      msg: "Something happened",
+      msg: 'Something happened',
+    });
+  }
+};
+
+const handleFollowPlaylist = async (req, res) => {
+  const { userId, playlistId } = req.body;
+  try {
+    const user = await User.findById(userId);
+
+    if (user.followedPlaylists.includes(playlistId)) {
+      await user.followedPlaylists.pull(playlistId);
+      await user.save();
+      const userChanges = await User.findById(userId).populate(
+        'followedPlaylists'
+      );
+      return res.status(200).json({
+        ok: true,
+        followedPlaylists: userChanges.followedPlaylists,
+      });
+    }
+
+    user.followedPlaylists.push(playlistId);
+    await user.save();
+    const userChanges = await User.findById(userId).populate(
+      'followedPlaylists'
+    );
+
+    return res.status(200).json({
+      ok: true,
+      followedPlaylists: userChanges.followedPlaylists,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(503).json({
+      ok: false,
+      msg: 'Something happened',
     });
   }
 };
@@ -97,4 +135,5 @@ module.exports = {
   editImage,
   aut0Login,
   editUsername,
+  handleFollowPlaylist,
 };
