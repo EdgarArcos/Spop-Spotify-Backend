@@ -43,7 +43,10 @@ Poder seguir artistas y que te notifique si sube contenido, gestion de estaditic
 
 ## Imagenes Spop
 
-![Video Spop]()
-
+![Imagen Spop](./imgreadme/CapturaSpopHome.PNG)
+![Imagen Spop](./imgreadme/CapturaSpopProfile.PNG)
+![Imagen Spop](./imgreadme/CapturaSpopLibreria.PNG)
+![Imagen Spop](./imgreadme/CapturaSpopArtista.PNG)
+![Imagen Spop](./imgreadme/CapturaSpopSearch.PNG)
 
 
