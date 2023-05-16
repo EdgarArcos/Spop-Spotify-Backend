@@ -43,4 +43,20 @@ Poder seguir artistas y que te notifique si sube contenido, gestion de estaditic
 
 ## Imagenes Spop
 
-![Video Spop]()
+
+
+
+https://github.com/EdgarArcos/Spop-Spotify-Backend/assets/119437039/3a6a24fc-539a-430f-8be9-cb153c450be1
+
+
+
+![Imagen Spop](./imgreadme/CapturaSpopHome.PNG)
+![Imagen Spop](./imgreadme/CapturaSpopProfile.PNG)
+![Imagen Spop](./imgreadme/CapturaSpopLibreria.PNG)
+![Imagen Spop](./imgreadme/CapturaSpopArtista.PNG)
+![Imagen Spop](./imgreadme/CapturaSpopSearch.PNG)
+
+
+
+
+
