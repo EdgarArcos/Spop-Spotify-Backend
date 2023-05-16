@@ -15,7 +15,7 @@ const aut0Login = async (req, res) => {
         email: req.body.email,
       });
       await newUser.save();
-      const likedSongs = await new Playlist({
+      const likedSongs = new Playlist({
         title: 'Liked Songs',
         img: 'https://res.cloudinary.com/dycz1nib9/image/upload/v1683276186/Artist_Songs/likedsongsbig_edgts4.png',
         songs: [],
@@ -24,7 +24,7 @@ const aut0Login = async (req, res) => {
       await likedSongs.save();
       return res.status(201).json({
         ok: true,
-        user,
+        user: newUser,
         playlist: [likedSongs],
       });
     }

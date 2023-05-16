@@ -1,11 +1,12 @@
 const User = require('../models/User');
+const Playlist = require('../models/Playlist');
 
 const searchUser = async (req, res) => {
   const { inputValue } = req.body;
   const regex = new RegExp(inputValue, 'i');
   try {
     const user = await User.find({ email: regex });
-    console.log(user);
+
     if (!user) {
       return res.status(404).json({
         ok: false,
@@ -26,9 +27,10 @@ const searchUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
+
   try {
     await User.findByIdAndDelete(userId);
+    await Playlist.find;
     return res.status(200).json({
       ok: true,
     });
