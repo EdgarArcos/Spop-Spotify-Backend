@@ -30,7 +30,7 @@ const deleteUser = async (req, res) => {
 
   try {
     await User.findByIdAndDelete(userId);
-    await Playlist.find;
+    await Playlist.deleteMany({ user: userId });
     return res.status(200).json({
       ok: true,
     });
