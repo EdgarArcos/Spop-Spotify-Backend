@@ -8,10 +8,13 @@ const getSearchResults = async (req, res) => {
   const usersQuery = {
     $or: [{ email: { $regex: regex } }, { name: { $regex: regex } }],
   };
+  const songsQuery = {
+    $or: [{ name: { $regex: regex } }, { artist: { $regex: regex } }],
+  };
 
   try {
     const users = await User.find(usersQuery);
-    const songsByName = await Song.find({ name: regex });
+    const songsByName = await Song.find(songsQuery);
     const playlistRes = await Playlist.find({ title: regex }).populate(
       "user",
       "name"
@@ -37,6 +40,7 @@ const getPlaylistResults = async (req, res) => {
     const playlist = await Playlist.findById(playlistId)
       .populate("songs")
       .populate("user", "name");
+
     return res.status(200).json({
       ok: true,
       playlist,
@@ -50,4 +54,23 @@ const getPlaylistResults = async (req, res) => {
   }
 };
 
-module.exports = { getSearchResults, getPlaylistResults };
+const getUserResults = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    const playlists = await Playlist.find({ user: userId });
+    return res.status(200).json({
+      ok: true,
+      user,
+      playlists,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(503).json({
+      ok: false,
+      msg: "Something happened",
+    });
+  }
+};
+
+module.exports = { getSearchResults, getPlaylistResults, getUserResults };
