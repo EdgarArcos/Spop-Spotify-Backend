@@ -17,7 +17,6 @@ Poder seguir artistas y que te notifique si sube contenido, gestion de estaditic
 * Nodejs
 * Express
 * Nodemoon
-* Bcrypt
 * Cloudinary
 * Cors
 * Doteenv
