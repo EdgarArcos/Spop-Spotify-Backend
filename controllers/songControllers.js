@@ -6,6 +6,7 @@ const {
   uploadImgSong,
   deleteImage,
 } = require('../utils/cloudinary');
+const Playlist = require('../models/Playlist');
 
 const getSongs = async (req, res) => {
   try {
