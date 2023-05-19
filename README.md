@@ -23,7 +23,7 @@ Poder seguir artistas y que te notifique si sube contenido, gestion de estaditic
 * Express-fileupload
 * Fs-extra
 * Helmet
-* Mogoose
+* Mongoose
 * Auth0
 
 ## Instalar y ejecutar proyecto
